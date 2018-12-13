@@ -18,6 +18,8 @@ require('dotenv').config();
 let app = express(); 
 app.use(bodyParser.json());
 
+const port = process.env.PORT || 8080;
+
 
 
 //mongodb+srv://alexander:<La76106co>@luontovahdit-ioayl.mongodb.net/test?retryWrites=true
@@ -203,8 +205,8 @@ function createToken (){
 }
 
 app.use("/profile", isUserLogged, profileRoute);
-app.listen(3002);
-console.log("Running in port 3002"); 
+app.listen(port);
+console.log("Running in port" + port);
 
 
 

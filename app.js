@@ -11,12 +11,28 @@ const {sanitizeBody}  = require('express-validator/filter');
 const passport = require("passport"); 
 const localStrategy = require("passport-local").Strategy; 
 const session = require("express-session"); 
-const MongoStore = require("connect-mongo")(session);  
+const MongoStore = require("connect-mongo")(session);
+require('dotenv').config();
+
 
 let app = express(); 
 app.use(bodyParser.json());
 
-mongoose.connect("mongodb://localhost/login").then(
+
+
+//mongodb+srv://alexander:<La76106co>@luontovahdit-ioayl.mongodb.net/test?retryWrites=true
+
+// const uri = "mongodb+srv://kay:myRealPassword@cluster0.mongodb.net/admin";
+//mongoose.connect("mongodb://luontovahdit:la76106co@luontovahdit-shard-00-00-ioayl.mongodb.net:27017,luontovahdit-shard-00-01-ioayl.mongodb.net:27017,luontovahdit-shard-00-02-ioayl.mongodb.net:27017/test?ssl=true&replicaSet=luontovahdit-shard-0&authSource=admin&retryWrites=true",
+
+//console.log(process.env.ATLAS_URI);
+
+mongoose.connect( process.env.ATLAS_URI,
+
+    { useNewUrlParser: true }
+
+//mongoose.connect("mmongodb+srv://luontovahdit:<La76106co>@luontovahdit-ioayl.mongodb.net/test?retryWrites=true"
+).then(
     () => {console.log("Connection to mongo DB successfull")},
     (error) => {console.log("Connection to mongpDB failed: " + error)}
 );
@@ -29,7 +45,8 @@ app.use(session({
     cookie : {maxAge : 180 * 60 * 60 * 24}, 
     store : new MongoStore ({
         collection : "session",
-        url : "mongodb://localhost/luontovahditsession",
+        //url : "mongodb://localhost/luontovahditsession",
+        url : process.env.ATLAS_URI,
         ttl : 24 * 60 * 60
     })
 }));
